@@ -69,13 +69,12 @@ class BSCrawler():
             raise Exception(f'Got code: {page.status_code} parsing {url}')
 
     def _get_text_inside_parenthesis(self, string: str) -> str:
-        ''' 
+        """
         Returns text inside a parenthesis.
         Example: lorem(text) -> text 
-        '''
+        """
         # Note: if no parenthesis will return the original string
         return string[string.find("(")+1:string.find(")")]
-
 
 
 class FileDatabase:
@@ -93,7 +92,7 @@ class FileDatabase:
             for event_json in events_as_json:
                 fh.write(event_json + '\n')
 
-    def load_events(self, sort_by_dt=False):
+    def load_events(self):
         events = []
         with open(self.filename, 'r', encoding='utf-8') as fh:
             lines = fh.readlines()
@@ -102,9 +101,6 @@ class FileDatabase:
             event = json.loads(line)
             event['date_time'] = datetime.fromisoformat(event['date_time'])
             events.append(event)
-
-        if sort_by_dt:
-            events = sorted(events, key=lambda event: event['date_time'], reverse=True)
 
         return events
 
@@ -120,14 +116,11 @@ class DetaDatabase:
             event_to_insert["date_time"] = event["date_time"].isoformat()
             self.db.put(event_to_insert, key=event_to_insert["id"])
 
-    def load_events(self, sort_by_dt=False):
+    def load_events(self):
         events = next(self.db.fetch())
 
         for event in events:
             event["date_time"] = datetime.fromisoformat(event["date_time"])
-
-        if sort_by_dt:
-            events = sorted(events, key=lambda event: event['date_time'], reverse=True)
 
         return events
 
@@ -140,8 +133,12 @@ def crawl_events(meetup_id, crawler):
     return crawler.crawl_events(meetup_id)
 
 
-def load_events(database, sort_by_dt=False):
-    return database.load_events(sort_by_dt)
+def load_events(database):
+    return database.load_events()
+
+
+def sort_events(events, field, reverse=False):
+    return sorted(events, key=lambda event: event[field], reverse=reverse)
 
 
 def get_database():

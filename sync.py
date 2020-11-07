@@ -1,4 +1,4 @@
-from utils import get_database, crawl_events, save_events, load_events, BSCrawler
+from utils import get_database, crawl_events, save_events, BSCrawler
 
 
 def sync_meetups(meetup_ids):
@@ -11,8 +11,6 @@ def sync_meetups(meetup_ids):
         print("Finished")
 
     save_events(events, database)
-    events = load_events(database)
-
     print(events)
 
 

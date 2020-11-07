@@ -3,8 +3,7 @@ import os
 from flask import Flask
 from flask import render_template
 
-
-from utils import load_events, get_database
+from utils import load_events, get_database, sort_events
 
 app = Flask(__name__)
 database = get_database()
@@ -28,5 +27,6 @@ if bool(os.getenv("RUNNING_IN_DETA")):
 
 @app.route('/')
 def list_events():
-    events = load_events(database, sort_by_dt=True)
-    return render_template('index.html', events=events)
+    events = load_events(database)
+    return render_template(
+        'index.html', events=sort_events(events, field="date_time"))
