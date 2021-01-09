@@ -30,7 +30,7 @@ FLASK_APP=main.py FLASK_ENV=development flask run
 
 
 Consideraciones:
-- Ahora mismo las "base de datos" admitidas son o bien un archivo json o una `DetaBase` (ver https://docs.deta.sh/docs/base/about). Esto no es escalable ni ACID ni nada y probablemente sea mejor usar una base de datos de verdad. :D
+- Ahora mismo las "base de datos" admitidas son o bien un archivo json o una `DetaBase` (ver https://docs.deta.sh/docs/base/about). Estudiar si tiene sentido usar otras bases de datos para ganar en features o flexibilidad.Fixes 
 - La idea es que el script de crawling se ejecute periódicamente (¿cada hora?) mediante un cron. Ahora mismo se tiene que ejecutar manualmente o en un Deta cron job.
 
 
